@@ -1,3 +1,14 @@
+#Do not track exe files as they will only run on CS server
+
+#ignore all
+*
+
+#unignore anything with an extension
+!*.*
+
+#unignore any dirs
+!*/
+
 #ignore anything that LaTeX uses as an intermediate
 *.sty
 *.aux
