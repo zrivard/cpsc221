@@ -125,10 +125,10 @@ What is the problem with this code?\\
 \fillinMC{{\tt array} should be declared as {\tt int[]}.}\\
 \fillinMC{We should declare {\tt array} outside of {\tt main}.}\\
 \fillinMC{{\tt array} is missing a constructor and a destructor.}\\
-\fillinMC{A line of the code is leading to undefined behavior.}\\
+\answerMC{A line of the code is leading to undefined behavior.}\\ %calling delete on a new[] leads to this, should be delete[]
 \fillinMC{This code has a compiler error on line 6.}\\
 \fillinMC{This code will seg-fault on line 4.}\\
-\answerMC{None of the other answers is true.}\\
+\fillinMC{None of the other answers is true.}\\
 
 
 \newpage
@@ -165,22 +165,22 @@ int main(void) {
 Identify all the problems in this code. \\
 \fillinMC{When {\tt setName} is declared the parameter name is omitted.}\\
 \fillinMC{The {\tt name} member in {\tt caffelatte} is incorrectly initialized.}\\
-\fillinMC{The {\tt getName} function returns a dangling pointer.}\\
+\answerMC{The {\tt getName} function returns a dangling pointer.}\\ %once caffeelatte goes out of scope yes
 \fillinMC{The instance {\tt latte} is not initialized.}\\
 \fillinMC{None of the above are correct.}\\
 
 \subsection*{MISC3 (1.5pts)}
 What error(s) might be caused by the code above?\\
-\answerMC{Double free error.}\\ %To be looked at further
+\answerMC{Double free error.}\\ %yep
 \fillinMC{Memory leak.}\\
 \fillinMC{C++ compilation errors.}\\
-\fillinMC{Segmentation fault.}\\
+\answerMC{Segmentation fault.}\\ %yep
 \fillinMC{None of the other answers is true.}\\
 
 \subsection*{MISC4 (1.5pts)}
-How would you fix the error(s)?\\ %TBD
-\fillinMC{Explicitly implement a copy constructor.}\\
-\fillinMC{Declare {\tt caffelatte} outside the {\tt if} statement.}\\
+How would you fix the error(s)?\\ 
+\answerMC{Explicitly implement a copy constructor.}\\ %yes
+\answerMC{Declare {\tt caffelatte} outside the {\tt if} statement.}\\%yes
 \fillinMC{Declare {\tt name} as a public member in {\tt Coffee}.}\\
 \fillinMC{Define {\tt setName} inside {\tt Coffee}'s class member list (with the parameter name!)}\\
 \fillinMC{None of the other answers is true.}\\
@@ -254,13 +254,13 @@ for (int i = 0; i < 12; i += 1)
 cout << endl;
 \end{lstlisting}
 
-Which of the following statements complete the code above so that the output is {\tt etnybtcbapa3}? %...wut?
+Which of the following statements complete the code above so that the output is {\tt etnybtcbapa3}?
 
 \fillinMC{{\tt char \& operator()} and {\tt msg.length()-position}}\\
 \fillinMC{{\tt char \& operator[]} and {\tt position}}\\
 \fillinMC{{\tt char \& operator()} and {\tt position}}\\
 \fillinMC{{\tt char \& operator[]} and {\tt msg.length()-position-1}}\\
-\fillinMC{{\tt char \& operator()} and {\tt msg.length()-position-1}}\\
+\answerMC{{\tt char \& operator()} and {\tt msg.length()-position-1}}\\ %this is the one
 \newpage
 \subsection*{MISC8 (1.5pts)}
 
@@ -363,7 +363,7 @@ In a sorted singly linked list, what will be the time required to insert at the 
 \fillinMC{$O(1)$}\\
 \fillinMC{$O(\log\log n)$}\\
 \fillinMC{$O(\log n)$}\\
-\fillinMC{$O(n)$}\\
+\answerMC{$O(n)$}\\ %takes n/2 time -> O(n)
 \fillinMC{$O(n \log n)$}\\
 
 \subsection*{MISC16 (1.5pts)}
@@ -372,7 +372,8 @@ Suppose you are given a pointer to some node in a singly linked list, but NOT th
 
 \fillinMC{Yes, we can find a way to delete any of the nodes.}\\
 \fillinMC{Yes, but we can only delete a node if it's not the last node.}\\
-\fillinMC{No, because we need to change the {\tt next} field in the previous node.}\\
+\answerMC{No, because we need to change the {\tt next} field in the previous node. (Besides the clever hack 
+of deleting the next node but that is a whole new set of issues)}\\ %I think that is sufficient...
 \fillinMC{No, because we cannot delete the pointer to the node.}\\
 \fillinMC{None of the above is correct.}\\
 
@@ -384,19 +385,19 @@ Which of the following best describe the tightest running times for the function
 \fillinMC{$O(1)$ for both.}\\
 \fillinMC{$O(n)$ for both.}\\
 \fillinMC{$O(1)$ for {\tt enqueue} and $O(n)$ for {\tt dequeue}.}\\
-\fillinMC{$O(n)$ for {\tt enqueue} and $O(1)$ for {\tt dequeue}.}\\
+\answerMC{$O(n)$ for {\tt enqueue} and $O(1)$ for {\tt dequeue}.}\\ %can always find the one after head in O(1), but the tail (enqueue) is O(n)
 \fillinMC{None of the options is correct}\\
 
 \subsection*{MISC18 (1.5pts)}
 
 We have implemented the Queue ADT as a circular array of size $n$, and we denote the head, or exit from the queue, as $h$. Every time the array is full, you resize the array creating a new array that can hold four times as many elements as the previous array and copy values over from the old array. 
-For each of the elements in the new array with index $i$, you'd assign the element at index \fillinblank{mmmmm} in the old array.
+For each of the elements in the new array with index $i$, you'd assign the element at index \fillinsmall{$h + i \mod n$} in the old array.
 
 \fillinMC{$i$}\\
 \fillinMC{${n - 4 i}$}\\
 \fillinMC{${4 n - i}$}\\
 \fillinMC{${i - h} \mod {4 n}$}\\
-\fillinMC{${h + i} \mod {n}$}\\
+\answerMC{${h + i} \mod {n}$}\\ %Drew it out, and it makes sense, but maybe best to confirm
 \fillinMC{${i - h} \mod {n}$}\\
 \fillinMC{${4 i + h} \mod {n}$}\\
 
@@ -419,7 +420,7 @@ int foo(std::stack<int> &s) {
 \fillinMC{An arbitrary element in {\tt s} is returned.}\\
 \fillinMC{The smallest element in {\tt s} is returned, assuming arbitrary {\tt s}.}\\
 \fillinMC{The largest element in {\tt s} is returned, assuming arbitrary {\tt s}.}\\
-\fillinMC{The element at the bottom of {\tt s} is returned.}\\
+\answerMC{The element at the bottom of {\tt s} is returned.}\\ %tried and tested, makes sense though
 \fillinMC{The element at the top of {\tt s} is returned.}\\
 \newpage
 
@@ -437,7 +438,7 @@ void fun(std::stack<int> &s) {
 \end{lstlisting}
 
 \fillinMC{{\tt s} remains the same.}\\
-\fillinMC{The elements of {\tt s} are reversed.}\\
+\answerMC{The elements of {\tt s} are reversed.}\\ %tested and makes sense since foo(s) gets the bottom, and this is also recursive
 \fillinMC{The elements in {\tt s} are sorted.}\\
 \fillinMC{The elements in {\tt s} are shuffled in a random order.}\\
 \fillinMC{The top half of {\tt s} contains even elements and the bottom half of {\tt s} contains odd elements}\\
@@ -467,7 +468,7 @@ bar(head);
 
 \fillinMC{{\tt baz} has been invoked and {\tt curr} points to the second last element.}\\
 \fillinMC{{\tt baz} has never been invoked and {\tt curr} points to the last element.}\\
-\fillinMC{{\tt baz} has never been invoked and {\tt curr} points to the second last element.}\\
+\answerMC{{\tt baz} has never been invoked and {\tt curr} points to the second last element.}\\ %pz draw out to confirm
 \fillinMC{{\tt baz} has been invoked and {\tt curr} points to the last element}\\
 \fillinMC{The program aborted before the while loop ends.}\\
 \fillinMC{None of the other options is correct.}\\
@@ -481,16 +482,16 @@ In implementing Queue ADT, using which of the following data structure gives bes
 \fillinMC{Singly linked list with head and tail pointer.}\\
 \fillinMC{Doubly linked list with head pointer only.}\\
 \fillinMC{Singly circular-linked list with tail pointer only.}\\
-\fillinMC{Doubly circular-linked list with head pointer only.}\\
+\answerMC{Doubly circular-linked list with head pointer only.}\\ %right? this has to be the best
 
 \subsection*{MISC23 (1.5pts)}
 
 Consider a class {\tt list} that is implemented using a singly circular-linked list with a {\tt head} pointer. Given that representation, which of the following operations could be implemented in $O(1)$ time, assuming you {\em are} allowed to copy data? 
 
-\fillinMC{Insert an item before the head pointer }\\
-\fillinMC{Insert an item after the head pointer  }\\
-\fillinMC{Delete the item before the head pointer  }\\
-\fillinMC{Delete the item after the head pointer}\\
+\fillinMC{Insert an item before the head pointer }\\ %...only if doubly linked
+\answerMC{Insert an item after the head pointer  }\\%yes
+\fillinMC{Delete the item before the head pointer  }\\%only if dl
+\answerMC{Delete the item after the head pointer}\\%yep
 \fillinMC{None of them}\\
 
 \newpage

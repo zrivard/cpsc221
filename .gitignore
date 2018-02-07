@@ -1,0 +1,5 @@
+#ignore anything that LaTeX uses as an intermediate
+*.sty
+*.aux
+*.out
+*.gz
