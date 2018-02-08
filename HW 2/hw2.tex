@@ -3,6 +3,8 @@
 \usepackage{jeffe,handout}
 \usepackage{tikz}
 \usepackage{pgfkeys}
+\usepackage{framed}
+\usepackage{amsmath}
 \usetikzlibrary{positioning,chains,fit,shapes,calc,graphs}
 
 \usepackage{multicol}
@@ -391,14 +393,14 @@ Which of the following best describe the tightest running times for the function
 \subsection*{MISC18 (1.5pts)}
 
 We have implemented the Queue ADT as a circular array of size $n$, and we denote the head, or exit from the queue, as $h$. Every time the array is full, you resize the array creating a new array that can hold four times as many elements as the previous array and copy values over from the old array. 
-For each of the elements in the new array with index $i$, you'd assign the element at index \fillinsmall{$h + i \mod n$} in the old array.
+For each of the elements in the new array with index $i$, you'd assign the element at index \fillinsmall{$i - h \mod n$} in the old array.
 
 \fillinMC{$i$}\\
 \fillinMC{${n - 4 i}$}\\
 \fillinMC{${4 n - i}$}\\
 \fillinMC{${i - h} \mod {4 n}$}\\
-\answerMC{${h + i} \mod {n}$}\\ %Drew it out, and it makes sense, but maybe best to confirm
-\fillinMC{${i - h} \mod {n}$}\\
+\fillinMC{${h + i} \mod {n}$}\\
+\answerMC{${i - h} \mod {n}$}\\
 \fillinMC{${4 i + h} \mod {n}$}\\
 
 
@@ -509,7 +511,7 @@ Inoha has many books stored in one pile in a box and would like to sort them by 
 \begin{tabular}{l|l|l|l}
 Inoha's box      & Hanoi's box & temp   &   operation\\\hline
 {\tt 1 5 3 7]} & {\tt ]}     &        &   {\tt temp=i.pop()}\\\hline
-&&&\\\hline
+{\tt 5 3 7]} &  {\tt ]} & {\tt 1} & {\tt temp = i.pop()}\\\hline
 &&&\\\hline
 &&&\\\hline
 &&&\\\hline
@@ -560,7 +562,7 @@ Time: \fillinblank{MMMMM} Space: \fillinblank{MMMMM}
 
 \item (6 points) Now Inoha wants to find the book with the least weight (and possibly take it out) as quick as possible, but she would also like to add new books to these (infinitely big) boxes. 
 \begin{itemize}
-\item (2 points) An ADT that satisfies Inoha's goal is called a {\em priority queue}. We are implementing this ADT with two (name another ADT)\fillinblank{mmmmm}. In our application, the book with the least weight should be stored on the top of one of the two boxes, and thus taking out the book with least weight can be done in \fillinblank{mmmmm} time. 
+\item (2 points) An ADT that satisfies Inoha's goal is called a {\em priority queue}. We are implementing this ADT with two (name another ADT)\fillinsmall{stacks}. In our application, the book with the least weight should be stored on the top of one of the two boxes, and thus taking out the book with least weight can be done in \fillinlarge{O(1)} time. 
 \item (4 points) The books in Inoha's box are sorted, and we'd like to maintain this status. However, when Inoha tries to add another book, she faces a challenge. We can solve this in \fillinblank{mmmmm} time by:  
 \vspace{2in}
 \end{itemize}
@@ -576,7 +578,7 @@ Time: \fillinblank{MMMMM} Space: \fillinblank{MMMMM}
 In case you hadn't noticed, Vancouver is a very rainy city! Suppose the daily rainfall data for $n$ consecutive days is stored in an array {\tt R}, so that {\tt R[d]} is the number of centimeters of rain that fell on day {\tt d}. Often, we are interested in looking at how much total rain fell between two given days. In this problem we will build a structure to help us answer such queries in constant time. 
 \begin{enumerate}
 
-\item (4 points) Assuming that $0 \leq i \leq j< n$, prove the correctness of the following algorithm by arguing that it returns the sum of daily totals between {\tt R[i]|} and {\tt R[j]}, inclusive, for any $0 \leq i \leq j< n$.
+\item (4 points) Assuming that $0 \leq i \leq j< n$, prove the correctness of the following algorithm by arguing that it returns the sum of daily totals between {\tt R[i]} and {\tt R[j]}, inclusive, for any $0 \leq i \leq j< n$.
 
 \begin{lstlisting}
 int getSum(const vector<double> & R, int i, int j){
@@ -586,25 +588,30 @@ int getSum(const vector<double> & R, int i, int j){
 		return R[j] + getSum(R, i, j-1);
 \end{lstlisting}
 \begin{enumerate}
-	\item Base case: argue briefly that the base case is correct. 
-    
-    \fillinblank{MMMMMMMMMMMMMMMMMMMMMMMMM}
+	\item Base case: argue briefly that the base case is correct.\\ 
+\begin{framed}
+    If $i == j$, then the total amount of rain that fell on days $i$ through $j$  (inclusive) is simply the amount of rain that fell on day $i$, since day $i$ and day $j$ are the same day.
+\end{framed}
     
     \item State an appropriate inductive hypothesis:
+\begin{framed}
+The inductive hypothesis states that the total amout of rain to fall over the period of days $i$ through $j$ (inclusive) is the rain that fell on day $j$ plus the rain that fell on days $i$ through $j-1$ inclusive.
+\end{framed}
     
-    \fillinblank{MMMMMMMMMMMMMMMMMMMMMMMMM}
+    \item Prove the inductive case:\\
     
-    \item Prove the inductive case:
-    \vspace{2.5in}
+\begin{framed}
+We are going to assume that the total rainfall over days $i$ through $j$ (inclusive) is correctly returned by $getSum(R, i, j)$. Now we must prove it returns the correct value for $j+1$. By the inductive hypothesis, the total rainfall over the span of days $i$ through $j + 1$ inclusive is the rain fall on day $j+1$ plus the total rainfall over the period of days $i$ through $(j+1) - 1$ inclusive, which is simply the rainfall over days $i$ through $j$. Yet this has been assumed to be true. Thus the total rainfall over days $i$ through $j+1$ is correctly returned by $getSum(R, i, j+1)$ as it is simply the rainfall on day $j+1$ plus the total rainfall over the span of days $i$ through $j$.
+\end{framed}
     
 \end{enumerate}
 \item (2 points) What is the worst case running time of the algorithm in the previous part?
 
-\fillinblank{MMMM}
+\fillinlarge{O(n)}
 
 \newpage
 \item (2 points) Suppose we want to pre-compute the sum of rain in {\em all possible} consecutive sets of days. Exactly how many sums do we need to compute for an array of size $n$?
-\fillinblank{MMMM}
+\fillinsmall{$n(n+1)/2$}
 
 \item (4 points) We propose the following algorithm to compute some of the entries of a 2D array S:
 \begin{lstlisting}
@@ -623,22 +630,24 @@ int main(void) {
 \end{lstlisting}
 What is the worst case running time of this algorithm to build the query structure, and how much space does it require in terms of $n$?
 
-Time: \fillinblank{MMMM} Space: \fillinblank{MMMM}
+
+
+Time: \fillinlarge{$n^3$} Space: \fillinlarge{$n^2$}
 \item (2 points) What is the running time to use {\tt S} to answer queries like ``what is the total rainfall between day $i$ and day $j$? (inclusive)'' for any $1 \leq i \leq j\leq n$?
 
-\fillinblank{MMMM}
+\fillinlarge{O(1)}
 
 \item (4 points) Let's be clever about this... suppose we build an array {\tt A} whose size is the same as {\tt R}, but whose entries are cumulative total rainfalls from the start day. What is the running time to build such a structure, and how much space does it use? (We are not asking you to show us the pseudocode solution to this problem, but you should sketch it out in order to answer the question!)
 
-Time: \fillinblank{MMMM} Space: \fillinblank{MMMM}
+Time: \fillinlarge{O(1)} Space: \fillinlarge{n}
 
 \item (4 points) Give an expression in terms of the new array {\tt A} that can be used to answer queries like ``what is the total rainfall between day $0$ and day $j$ (inclusive)?'' Also tell us the running time for answering the query.
 
-Expression: \fillinblank{MMMMMMMM} Time: \fillinblank{MMMM}
+Expression: \fillinsmall{$A[j]$} Time: \fillinlarge{O(1)}
 
 \item (4 points) Give an expression in terms of the new array {\tt A} that can be used to answer queries like ``what is the total rainfall between day $i$ and day $j$ (inclusive)?'' Also tell us the running time for answering the query.
 
-Expression: \fillinblank{MMMMMMMM} Time: \fillinblank{MMMM}
+Expression: \fillinsmall{$A[j] - A[i - 1]$} Time: \fillinsmall{O(1)}
 
 \item (4 points) Finally, we are going to design an algorithm to build {\em another} structure that will allow us to answer queries of the form ``what was the rainiest stretch of $k$ days?'' for any $1\leq k\leq n$.\\
 
