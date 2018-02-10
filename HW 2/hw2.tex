@@ -510,31 +510,53 @@ Inoha has many books stored in one pile in a box and would like to sort them by 
 
 \begin{tabular}{l|l|l|l}
 Inoha's box      & Hanoi's box & temp   &   operation\\\hline
-{\tt 1 5 3 7]} & {\tt ]}     &        &   {\tt temp=i.pop()}\\\hline
-{\tt 5 3 7]} &  {\tt ]} & {\tt 1} & {\tt temp = i.pop()}\\\hline
-&&&\\\hline
-&&&\\\hline
-&&&\\\hline
-&&&\\\hline
-&&&\\\hline
-&&&\\\hline
-&&&\\\hline
-&&&\\\hline
-&&&\\\hline
+{\tt 1 5 3 7]} & {\tt ]}     &   {\tt }     &   {\tt temp=i.pop()}\\\hline
+{\tt 5 3 7]} &  {\tt ]} & {\tt 1 } & {\tt h.push(temp)}\\\hline
+{\tt 5 3 7]} &  {\tt1 ]} & {\tt } & {\tt temp = i.pop()}\\\hline
+{\tt 3 7]} &  {\tt1 ]} & {\tt 5} & {\tt h.push(temp)}\\\hline
+{\tt 3 7]} &  {\tt5 1 ]} & {\tt } & {\tt temp = i.pop()}\\\hline
+{\tt 7]} &  {\tt5 1 ]} & {\tt3 } & {\tt i.push(h.pop()) }\\\hline
+{\tt 5 7]} &  {\tt1 ]} & {\tt3 } & {\tt h.push(temp)}\\\hline
+{\tt 5 7]} &  {\tt3 1 ]} & {\tt } & {\tt temp = i.pop()}\\\hline
+{\tt 7]} &  {\tt3 1 ]} & {\tt 5} & {\tt h.push(temp)}\\\hline
+{\tt 7]} &  {\tt5 3 1 ]} & {\tt } & {\tt temp = i.pop()}\\\hline
+{\tt ]} &  {\tt5 3 1 ]} & {\tt 7} & {\tt h.push(temp)}\\\hline
+{\tt ]} &  {\tt7 5 3 1 ]} & {\tt } & {\tt i.push(h.pop())}\\\hline
+{\tt 7]} &  {\t 5 3 1 ]} & {\tt } & {\tt i.push(h.pop())}\\\hline
+{\tt 5 7]} &  {\tt3 1 ]} & {\tt } & {\tt i.push(h.pop())}\\\hline
+{\tt 3 5 7]} &  {\tt 1 ]} & {\tt } & {\tt i.push(h.pop())}\\\hline
+{\tt 1 3 5 7]} &  {\tt]} & {\tt } & {\tt }\\\hline
 \end{tabular}
 \newpage
 \item (6 points) You are given the code below. Implement the {\tt ihonaify} function. {\bf Notice:} {\tt stack::pop()} will not return the element on the top.
 
 \begin{lstlisting}
 void inohaify(stack<int> &inoha, stack<int> &hanoi) {
-	// WRITE YOUR CODE HERE
+	 
+	if(inoha.empty()) return;
+
+	int temp = inoha.top();
+	inoha.pop();
+	
+	if(hanoi.empty() || temp >= hanoi.top(){
+		hanoi.push(temp);
+		inohaify(inoha, hanoi);
+	} else {
+		while(!hanoi.empty() && temp < hanoi.top()){
+			inoha.push(hanoi.top());
+			hanoi.pop();
+		}
+		hanoi.push(temp);
+		
+		inohaify(inoha, hanoi);
+	}
+
+	while(!hanoi.empty()){
+		inoha.push(hanoi.top());   
+		hanoi.pop();
+	}
     
-    
-    
-    
-    
-    
-    
+	return; 
 }
 
 int main(void) {
@@ -556,18 +578,25 @@ int main(void) {
 
 \item (4 points) What are the worst case time and space complexity for this algorithm? Can you justify that?
 
-Time: \fillinblank{MMMMM} Space: \fillinblank{MMMMM}
-\vspace{2in}
+\begin{framed}Time:  O($n^2$) as we can make $n$ calls to inohaify, and each call may have to traverse $n - 1$ elements in the stack \end{framed}
+\begin{framed}Space: O(n) as we have 2 stacks, which can each be a maximum size of $n$, thus $2n -> n$\end{framed}
 \newpage
 
 \item (6 points) Now Inoha wants to find the book with the least weight (and possibly take it out) as quick as possible, but she would also like to add new books to these (infinitely big) boxes. 
 \begin{itemize}
 \item (2 points) An ADT that satisfies Inoha's goal is called a {\em priority queue}. We are implementing this ADT with two (name another ADT)\fillinsmall{stacks}. In our application, the book with the least weight should be stored on the top of one of the two boxes, and thus taking out the book with least weight can be done in \fillinlarge{O(1)} time. 
-\item (4 points) The books in Inoha's box are sorted, and we'd like to maintain this status. However, when Inoha tries to add another book, she faces a challenge. We can solve this in \fillinblank{mmmmm} time by:  
-\vspace{2in}
+\item (4 points) The books in Inoha's box are sorted, and we'd like to maintain this status. However, when Inoha tries to add another book, she faces a challenge. We can solve this in \fillinlarge{O(n)} time by: 
+
+\begin{framed} 
+Popping all of the lighter elements off of inoha and onto hanoi, then pushing the new book onto inoha, and finally popping hanoi onto inoha until empty.
+\end{framed}
+
 \end{itemize}
 
 \item (2 points) Briefly explain how Inoha can get the $k$-th heaviest book from her box.
+\begin{framed}
+She can invert the stack by popping inoha onto hanoi until empty, and then while pushing back from hanoi, remove the $k$-th element that would have been popped, and finally popping hanoi onto inoha until empty.
+\end{framed}
 \end{enumerate}
 \newpage
 
@@ -662,15 +691,22 @@ void updateRainiest(const vector<double> & A, vector<int> & V, int j) {
     //assumes A[0..n-1] contains correct cumulative sums
     //assumes V[1..n] has been correctly updated up to iteration j.
     
- 
- 
- 
- 
+    //The only way V[x] changes is if the rainfall at the end of the array 
+    //is greater than what is currently in V[x]. Thus we only need to go
+    //backwards x days from the end of the array for each element in V
     
-    
-    
-    
-    
+	double rainfall_new;
+	double rainfall_old
+
+
+ 	for(int i = 1; i <= j; i++){
+		//Find the rainfall over the last i days
+		rainfall_new = A[j] - A[j - i]; 
+		 //Find the previous rainiest i days
+		rainfall_old = A[V[i]] - A[V[i] - i];
+		if(rainfall_new > rainfall_old)
+			V[i] = j;
+	}
     
     //end condition: V[1..n] has been correctly updated for iteration j
     return;
